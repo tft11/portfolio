@@ -1,68 +1,232 @@
 <!DOCTYPE html>
+
 <html lang="en" data-theme="light">
+
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Professional portfolio timeline — a visual journey through work, skills and milestones.">
   <title>Portfolio — Timeline</title>
 
-  <link rel="stylesheet" href="mod-shared.css">
+  <link rel="stylesheet" href="../assets/css/mod-shared.css">
+
   <style>
+
     /* ── Timeline layout ── */
+
     .timeline-wrapper {
       position: relative;
       padding-top: var(--header-h);
     }
 
-    /* Scroll spacer — JS sets height based on entry count */
     .timeline-scroll-track {
       position: relative;
+      padding-bottom: 12vh;
     }
 
-    /* Sticky viewport that the horizontal strip lives in */
     .timeline-sticky {
-      position: sticky;
-      top: var(--header-h);
-      height: calc(var(--timeline-h) - var(--header-h));
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      position: relative;
+      overflow: visible;
+      display: block;
     }
 
-    /* The axis rule that spans all panels */
+    /* Vertical centre line */
+
     .timeline-axis {
       position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
+      top: 715px;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
       background: var(--c-rule-strong);
-      transform: translateY(-50%);
+      transform: translateX(-50%);
       z-index: 2;
       pointer-events: none;
     }
 
-    /* Horizontal strip of panels */
+    /* Timeline strip */
+
     .timeline-strip {
       display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      height: 100%;
-      will-change: transform;
+      flex-direction: column;
+      width: 100%;
     }
 
-    /* Individual entry panel */
+    /* ── Intro ── */
+
+    .intro-panel {
+  width: 100%;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-8) max(8vw, var(--sp-16));
+  position: relative;
+  box-sizing: border-box;
+}
+
+    .intro-panel__eyebrow {
+      font-family: var(--f-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-text-muted);
+      margin-bottom: var(--sp-4);
+    }
+
+    .intro-panel__heading {
+      font-family: 'Electrolize', sans-serif;
+      font-size: clamp(3rem, 7vw, var(--fs-4xl));
+      font-weight: 700;
+      line-height: 0.95;
+      color: var(--c-text);
+      margin-bottom: var(--sp-6);
+    }
+
+    .intro-panel__heading em {
+      font-style: italic;
+      color: var(--c-accent);
+    }
+
+    .intro-panel__sub {
+      font-size: var(--fs-base);
+      color: var(--c-text-muted);
+      max-width: 360px;
+      line-height: 1.6;
+      margin-bottom: var(--sp-8);
+    }
+
+    .intro-panel__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-3);
+      font-family: var(--f-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-text);
+      border-bottom: 1px solid var(--c-rule-strong);
+      padding-bottom: var(--sp-2);
+      width: fit-content;
+    }
+
+    /* ── Square ── */
+     .intro-heading-wrap {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  cursor: pointer;
+}
+
+.intro-panel__heading {
+  position: relative;
+  z-index: 3;
+  font-family: 'Electrolize', sans-serif;
+  text-align: center;
+}
+
+.intro-square {
+  position: absolute;
+
+  width: 330px;
+  height: 330px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) rotate(45deg);
+
+  background: var(--c-intro-square);
+
+  z-index: 1;
+  pointer-events: none;
+
+  transition:
+    transform 700ms var(--ease-back);
+}
+
+.intro-heading-wrap::after {
+  content: "";
+  position: absolute;
+  width: 330px;
+  height: 330px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) rotate(45deg);
+
+  z-index: 3;
+  cursor: pointer;
+}
+
+.intro-panel__eyebrow {
+  position: relative;
+  z-index: 3;
+  margin-bottom: var(--sp-6);
+}
+
+.intro-panel__sub {
+  position: relative;
+  z-index: 3;
+  margin-top: var(--sp-6);
+}
+
+.intro-panel__cta {
+  position: relative;
+  z-index: 3;
+  margin-top: var(--sp-6);
+}
+
+    /* ── Individual timeline entry ── */
+
     .timeline-panel {
-      flex: 0 0 var(--panel-w);
-      width: var(--panel-w);
-      height: 100%;
+      width: 100%;
+      min-height: 70vh;
       display: grid;
-      grid-template-rows: 1fr auto 1fr;
+      grid-template-columns: minmax(0, 1fr) 80px minmax(0, 1fr);
       position: relative;
+      box-sizing: border-box;
       cursor: pointer;
+      align-items: center;
     }
 
-    /* Year label on axis */
+    /*
+      Explicit left/right classes are used instead of nth-child().
+      This is important because the intro panel is also a child
+      of .timeline-strip.
+    */
+
+    /* First / third / fifth... */
+
+    .timeline-panel--left .panel-upper {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .timeline-panel--left .panel-lower {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    /* Second / fourth / sixth... */
+
+    .timeline-panel--right .panel-upper {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .timeline-panel--right .panel-lower {
+      grid-column: 1;
+      grid-row: 1;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    /* ── Timeline marker ── */
+
     .panel-year {
       position: absolute;
       left: 50%;
@@ -77,11 +241,15 @@
     }
 
     .panel-year__dot {
-      width: 10px; height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: var(--c-bg);
       border: 2px solid var(--c-text);
-      transition: background var(--dur-med), border-color var(--dur-fast), transform var(--dur-med) var(--ease-back);
+      transition:
+        background var(--dur-med),
+        border-color var(--dur-fast),
+        transform var(--dur-med) var(--ease-back);
       pointer-events: all;
       cursor: pointer;
     }
@@ -107,21 +275,83 @@
       color: var(--c-accent);
     }
 
-    /* Upper half: media */
+    /* ── Image side ── */
+
     .panel-upper {
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      padding: var(--sp-8) var(--sp-16) var(--sp-6);
-      overflow: hidden;
+      padding: var(--sp-8) clamp(24px, 5vw, 80px);
+      box-sizing: border-box;
     }
 
-    /* Lower half: text */
+    .panel-media-thumb {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      transition:
+        opacity var(--dur-slow) var(--ease-expo),
+        transform var(--dur-slow) var(--ease-expo);
+    }
+
+    .timeline-panel.is-active .panel-media-thumb {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .panel-media-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Tags under images ── */
+
+    .panel-upper__tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--sp-2);
+      margin-top: var(--sp-4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity var(--dur-med) 0.1s,
+        transform var(--dur-med) 0.1s var(--ease-expo);
+    }
+
+    .timeline-panel.is-active .panel-upper__tags {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Keep your original tag styling */
+
+    .tag {
+      font-family: var(--f-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: var(--sp-1) var(--sp-3);
+      border: 1px solid var(--c-rule);
+      color: var(--c-text-muted);
+      border-radius: 1px;
+    }
+
+    /* ── Text side ── */
+
     .panel-lower {
       display: flex;
-      align-items: flex-start;
-      padding: var(--sp-6) var(--sp-16) var(--sp-8);
-      overflow: hidden;
+      align-items: center;
+      padding: var(--sp-8) clamp(24px, 5vw, 80px);
+      box-sizing: border-box;
     }
 
     .panel-title-block {
@@ -137,7 +367,9 @@
       margin-bottom: var(--sp-2);
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity var(--dur-med), transform var(--dur-med) var(--ease-expo);
+      transition:
+        opacity var(--dur-med),
+        transform var(--dur-med) var(--ease-expo);
     }
 
     .panel-title-block__title {
@@ -148,94 +380,170 @@
       color: var(--c-text);
       opacity: 0;
       transform: translateY(12px);
-      transition: opacity var(--dur-slow) var(--ease-expo), transform var(--dur-slow) var(--ease-expo);
+      transition:
+        opacity var(--dur-slow) var(--ease-expo),
+        transform var(--dur-slow) var(--ease-expo);
     }
 
-    .panel-title-block__tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--sp-2);
-      margin-top: var(--sp-4);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity var(--dur-med) 0.1s, transform var(--dur-med) 0.1s var(--ease-expo);
-    }
+    /* Active entry reveals title */
 
-    .tag {
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: var(--sp-1) var(--sp-3);
-      border: 1px solid var(--c-rule);
-      color: var(--c-text-muted);
-      border-radius: 1px;
-    }
-
-    /* Active panel reveals text */
     .timeline-panel.is-active .panel-title-block__role,
-    .timeline-panel.is-active .panel-title-block__title,
-    .timeline-panel.is-active .panel-title-block__tags {
+    .timeline-panel.is-active .panel-title-block__title {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Media thumbnail */
-    .panel-media-thumb {
-      position: relative;
-      width: 100%;
-      max-width: 520px;
-      aspect-ratio: 16/9;
-      overflow: hidden;
-      border-radius: 2px;
-      opacity: 0;
-      transform: translateY(-12px) scale(0.97);
-      transition: opacity var(--dur-slow) var(--ease-expo), transform var(--dur-slow) var(--ease-expo);
-    }
+    /* ── Entry number ── */
 
-    .timeline-panel.is-active .panel-media-thumb {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .panel-media-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .panel-media-thumb__count {
+   /* .panel-index {
       position: absolute;
-      bottom: var(--sp-3);
-      right: var(--sp-3);
+      top: var(--sp-6);
+      right: var(--sp-8);
       font-family: var(--f-mono);
       font-size: var(--fs-xs);
-      letter-spacing: 0.08em;
-      background: rgba(0,0,0,0.7);
+      letter-spacing: 0.1em;
+      color: var(--c-text-muted);
+      opacity: 0.5;
+    } */
+
+    /* ── Remove horizontal arrows ── */
+
+    .panel-arrow {
+      display: none;
+    }
+
+    /* ── Nav dots ── */
+
+    .timeline-nav-dots {
+      position: fixed;
+      bottom: var(--sp-8);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--sp-3);
+      z-index: 50;
+      background: var(--c-bg);
+      border: 1px solid var(--c-rule);
+      border-radius: 2px;
+      padding: var(--sp-3) var(--sp-4);
+    }
+
+    .nav-dot {
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-rule);
+      border: none;
+      cursor: pointer;
+      transition:
+        background var(--dur-fast),
+        transform var(--dur-med) var(--ease-back);
+      padding: 0;
+    }
+
+    .nav-dot.is-active {
+      background: var(--c-accent);
+      transform: scale(1.5);
+    }
+
+    .nav-dot:hover:not(.is-active) {
+      background: var(--c-text-muted);
+    }
+
+    /* ── Keyboard nav instructions ── */
+
+    .kbd-hint {
+      position: fixed;
+      bottom: var(--sp-8);
+      right: var(--sp-8);
+      font-family: var(--f-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.06em;
+      color: var(--c-text-muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      z-index: 50;
+    }
+
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 var(--sp-2);
+      background: var(--c-bg-alt);
+      border: 1px solid var(--c-rule);
+      border-radius: 2px;
+      font-family: var(--f-mono);
+      font-size: 10px;
+    }
+
+    /* ── Video placeholder ── */
+
+    .media-type-badge {
+      position: absolute;
+      top: var(--sp-3);
+      left: var(--sp-3);
+      font-family: var(--f-mono);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--c-accent);
       color: #fff;
       padding: var(--sp-1) var(--sp-2);
       border-radius: 1px;
     }
 
-    /* Hint arrows */
-    .panel-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px; height: 44px;
-      color: var(--c-text-muted);
-      opacity: 0.3;
-      transition: opacity var(--dur-fast);
-      pointer-events: none;
+    /* ── Mobile ── */
+
+    @media (max-width: 700px) {
+
+      .timeline-axis {
+        left: 24px;
+      }
+
+      .timeline-panel {
+        display: block;
+        min-height: auto;
+        padding: 80px 24px 100px 56px;
+      }
+
+      .panel-year {
+        left: 24px;
+        top: 40px;
+        transform: translateX(-50%);
+      }
+
+      .panel-upper,
+      .panel-lower {
+        display: block;
+        padding: var(--sp-4) 0;
+        text-align: left !important;
+      }
+
+      .panel-media-thumb {
+        max-width: 100%;
+        margin-bottom: var(--sp-4);
+      }
+
+      .panel-upper__tags {
+        justify-content: flex-start;
+      }
+
+      .panel-index {
+        right: 24px;
+      }
+
+      .kbd-hint {
+        display: none;
+      }
     }
-    .panel-arrow--left { left: var(--sp-6); }
-    .panel-arrow--right { right: var(--sp-6); }
-    .timeline-panel:hover .panel-arrow { opacity: 0.6; }
 
     /* ── Lightbox / Detail overlay ── */
+
     .lightbox {
       position: fixed;
       inset: 0;
@@ -290,7 +598,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 44px; height: 44px;
+      width: 44px;
+      height: 44px;
       background: none;
       border: 1px solid var(--c-rule);
       border-radius: 2px;
@@ -299,8 +608,11 @@
       font-size: 1.25rem;
       line-height: 1;
       flex-shrink: 0;
-      transition: border-color var(--dur-fast), background var(--dur-fast);
+      transition:
+        border-color var(--dur-fast),
+        background var(--dur-fast);
     }
+
     .lightbox__close:hover {
       border-color: var(--c-text);
       background: var(--c-accent-dim);
@@ -336,7 +648,7 @@
 
     .lightbox__media-main {
       width: 100%;
-      aspect-ratio: 16/9;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
       border-radius: 2px;
       background: var(--c-bg-alt);
@@ -345,7 +657,8 @@
 
     .lightbox__media-main img,
     .lightbox__media-main iframe {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
       border: none;
@@ -358,7 +671,7 @@
     }
 
     .lightbox__media-thumb {
-      aspect-ratio: 16/9;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
       border-radius: 2px;
       cursor: pointer;
@@ -372,7 +685,8 @@
     }
 
     .lightbox__media-thumb img {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
@@ -455,254 +769,160 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
-      transition: border-color var(--dur-fast), background var(--dur-fast), color var(--dur-fast);
+      transition:
+        border-color var(--dur-fast),
+        background var(--dur-fast),
+        color var(--dur-fast);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: var(--sp-2);
     }
+
     .lightbox__nav-btn:hover:not(:disabled) {
       border-color: var(--c-text);
       background: var(--c-accent-dim);
       color: var(--c-accent);
     }
+
     .lightbox__nav-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
 
-    /* ── Intro panel ── */
-    .intro-panel {
-      flex: 0 0 var(--panel-w);
-      width: var(--panel-w);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: var(--sp-8) var(--sp-16);
-      position: relative;
-    }
-
-    .intro-panel__eyebrow {
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--c-text-muted);
-      margin-bottom: var(--sp-4);
-    }
-
-    .intro-panel__heading {
-      font-family: var(--f-display);
-      font-size: clamp(3rem, 7vw, var(--fs-4xl));
-      font-weight: 700;
-      line-height: 0.95;
-      color: var(--c-text);
-      margin-bottom: var(--sp-6);
-    }
-
-    .intro-panel__heading em {
-      font-style: italic;
-      color: var(--c-accent);
-    }
-
-    .intro-panel__sub {
-      font-size: var(--fs-base);
-      color: var(--c-text-muted);
-      max-width: 360px;
-      line-height: 1.6;
-      margin-bottom: var(--sp-8);
-    }
-
-    .intro-panel__cta {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp-3);
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--c-text);
-      border-bottom: 1px solid var(--c-rule-strong);
-      padding-bottom: var(--sp-2);
-      width: fit-content;
-    }
-
-    /* Scroll hint animation */
-    .scroll-hint {
-      position: absolute;
-      bottom: var(--sp-8);
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--sp-2);
-      color: var(--c-text-muted);
-    }
-
-    .scroll-hint__text {
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .scroll-hint__line {
-      width: 1px;
-      height: 40px;
-      background: var(--c-rule);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes scrollPulse {
-      0%, 100% { transform: scaleY(1); opacity: 0.4; }
-      50% { transform: scaleY(0.6); opacity: 1; }
-    }
-
-    /* ── Nav dots ── */
-    .timeline-nav-dots {
-      position: fixed;
-      bottom: var(--sp-8);
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: var(--sp-3);
-      z-index: 50;
-      background: var(--c-bg);
-      border: 1px solid var(--c-rule);
-      border-radius: 2px;
-      padding: var(--sp-3) var(--sp-4);
-    }
-
-    .nav-dot {
-      display: block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--c-rule);
-      border: none;
-      cursor: pointer;
-      transition: background var(--dur-fast), transform var(--dur-med) var(--ease-back);
-      padding: 0;
-    }
-
-    .nav-dot.is-active {
-      background: var(--c-accent);
-      transform: scale(1.5);
-    }
-
-    .nav-dot:hover:not(.is-active) {
-      background: var(--c-text-muted);
-    }
-
-    /* ── Keyboard nav instructions ── */
-    .kbd-hint {
-      position: fixed;
-      bottom: var(--sp-8);
-      right: var(--sp-8);
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.06em;
-      color: var(--c-text-muted);
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      z-index: 50;
-    }
-
-    kbd {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 var(--sp-2);
-      background: var(--c-bg-alt);
-      border: 1px solid var(--c-rule);
-      border-radius: 2px;
-      font-family: var(--f-mono);
-      font-size: 10px;
-    }
-
-    /* ── Entry number label ── */
-    .panel-index {
-      position: absolute;
-      top: var(--sp-6);
-      right: var(--sp-8);
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      color: var(--c-text-muted);
-      opacity: 0.5;
-    }
-
-    /* Video placeholder */
-    .media-type-badge {
-      position: absolute;
-      top: var(--sp-3);
-      left: var(--sp-3);
-      font-family: var(--f-mono);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--c-accent);
-      color: #fff;
-      padding: var(--sp-1) var(--sp-2);
-      border-radius: 1px;
-    }
   </style>
+
 </head>
+
 <body>
+
   <a href="#timeline" class="skip-link">Skip to timeline</a>
 
   <!-- Site Header -->
+
   <header class="site-header" role="banner">
+
     <a href="/" class="site-header__logo" aria-label="Portfolio home">
+
       <span class="site-header__logo-dot" aria-hidden="true"></span>
+
       <span>Portfolio</span>
+
     </a>
 
     <div class="site-header__controls">
-      <span class="timeline-progress mono" id="progressLabel" aria-live="polite" aria-atomic="true">01 / 01</span>
 
-      <button class="btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <span
+        class="timeline-progress mono"
+        id="progressLabel"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        01 / 01
+      </span>
+
+      <button
+        class="btn-icon"
+        id="themeToggle"
+        aria-label="Toggle dark mode"
+        title="Toggle dark/light mode"
+      >
+
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
           <circle cx="12" cy="12" r="5"/>
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
+
       </button>
 
-      <button class="btn-icon" id="openBtn" aria-label="Open current entry detail" title="Open entry">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <button
+        class="btn-icon"
+        id="openBtn"
+        aria-label="Open current entry detail"
+        title="Open entry"
+      >
+
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
           <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
         </svg>
+
       </button>
+
     </div>
+
   </header>
 
+
   <!-- Main Timeline -->
+
   <main id="timeline" class="timeline-wrapper" role="main">
+
     <div class="timeline-scroll-track" id="scrollTrack">
+
       <div class="timeline-sticky">
+
         <div class="timeline-axis" aria-hidden="true"></div>
-        <div class="timeline-strip" id="timelineStrip" role="list" aria-label="Portfolio timeline entries">
+
+        <div
+          class="timeline-strip"
+          id="timelineStrip"
+          role="list"
+          aria-label="Portfolio timeline entries"
+        >
           <!-- Panels injected by JS -->
         </div>
+
       </div>
+
     </div>
+
   </main>
 
+
   <!-- Nav dots -->
-  <nav class="timeline-nav-dots" id="navDots" aria-label="Timeline navigation"></nav>
+
+  <nav
+    class="timeline-nav-dots"
+    id="navDots"
+    aria-label="Timeline navigation"
+  ></nav>
+
 
   <!-- Keyboard hint -->
+
   <p class="kbd-hint" aria-hidden="true">
-    <kbd>←</kbd><kbd>→</kbd> navigate &nbsp;
-    <kbd>Enter</kbd> open &nbsp;
-    <kbd>Esc</kbd> close
+
+    <kbd>←</kbd>
+    <kbd>→</kbd>
+    navigate &nbsp;
+
+    <kbd>Enter</kbd>
+    open &nbsp;
+
+    <kbd>Esc</kbd>
+    close
+
   </p>
 
+
   <!-- Lightbox / Detail view -->
+
   <div
     class="lightbox"
     id="lightbox"
@@ -712,605 +932,1602 @@
     aria-hidden="true"
     tabindex="-1"
   >
+
     <div class="lightbox__header">
+
       <div class="lightbox__meta">
-        <span class="lightbox__year" id="lightboxYear"></span>
-        <h1 class="lightbox__title" id="lightboxTitle"></h1>
+
+        <span
+          class="lightbox__year"
+          id="lightboxYear"
+        ></span>
+
+        <h1
+          class="lightbox__title"
+          id="lightboxTitle"
+        ></h1>
+
       </div>
-      <button class="lightbox__close" id="lightboxClose" aria-label="Close detail view">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+
+      <button
+        class="lightbox__close"
+        id="lightboxClose"
+        aria-label="Close detail view"
+      >
+
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
+
       </button>
+
     </div>
 
+
     <div class="lightbox__body">
+
       <div class="lightbox__media-col">
-        <div class="lightbox__media-main" id="lightboxMain"></div>
-        <div class="lightbox__media-grid" id="lightboxGrid" role="list" aria-label="Media gallery"></div>
+
+        <div
+          class="lightbox__media-main"
+          id="lightboxMain"
+        ></div>
+
+        <div
+          class="lightbox__media-grid"
+          id="lightboxGrid"
+          role="list"
+          aria-label="Media gallery"
+        ></div>
+
       </div>
 
-      <div class="lightbox__info-col">
-        <p class="lightbox__role" id="lightboxRole"></p>
-        <p class="lightbox__description" id="lightboxDesc"></p>
 
-        <div class="lightbox__facts" id="lightboxFacts">
+      <div class="lightbox__info-col">
+
+        <p
+          class="lightbox__role"
+          id="lightboxRole"
+        ></p>
+
+        <p
+          class="lightbox__description"
+          id="lightboxDesc"
+        ></p>
+
+        <div
+          class="lightbox__facts"
+          id="lightboxFacts"
+        >
           <!-- Fact rows injected by JS -->
         </div>
 
-        <div class="lightbox__tags" id="lightboxTags"></div>
+        <div
+          class="lightbox__tags"
+          id="lightboxTags"
+        ></div>
 
-        <nav class="lightbox__nav" aria-label="Entry navigation">
-          <button class="lightbox__nav-btn" id="lightboxPrev" aria-label="Previous entry">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <nav
+          class="lightbox__nav"
+          aria-label="Entry navigation"
+        >
+
+          <button
+            class="lightbox__nav-btn"
+            id="lightboxPrev"
+            aria-label="Previous entry"
+          >
+
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
+
             Prev
+
           </button>
-          <button class="lightbox__nav-btn" id="lightboxNext" aria-label="Next entry">
+
+
+          <button
+            class="lightbox__nav-btn"
+            id="lightboxNext"
+            aria-label="Next entry"
+          >
+
             Next
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
+
           </button>
+
         </nav>
+
       </div>
+
     </div>
+
   </div>
 
-  <!-- Scroll hint (visible until first scroll) -->
-  <div class="scroll-hint" id="scrollHint" aria-hidden="true">
-    <span class="scroll-hint__text">Scroll</span>
-    <span class="scroll-hint__line"></span>
-  </div>
 
   <!-- GSAP -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 
   <script type="module">
+
     // ── Data ──
+
     const TIMELINE_DATA_KEY = 'portfolio_timeline_v1';
 
     const DEFAULT_ENTRIES = [
-  {
-    "id": "entry-001",
-    "year": "2026",
-    "title": "Minecraft Modding",
-    "role": "Independent Developer",
-    "description": "Modding gave me the freedom to create things the way I wanted and actually implement them into a game that so many people play. Starting with Toast + More helped me develop my Java skills and showed me how existing systems can make programming much easier. Once I found the first project fairly straightforward, I wanted to challenge myself with something more difficult, which led me to start working on a new WorldGeneration mod which has not yet been released on Modrinth.",
-    "who": "tft11 (independent)",
-    "what": "Modding",
-    "where": "Modrinth",
-    "why": "Modding gave me the freedom to create things the way I wanted while developing my Java skills and teaching me how existing systems can be used to make programming easier.",
-    "tags": [
-      "Coding",
-      "Java",
-      "Minecraft",
-      "game development"
-    ],
-    "media": [
+
       {
-        "type": "image",
-        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1788534800/Screenshot_2026-09-04_161220.png",
-        "alt": "Modrinth Mod",
-        "caption": ""
+        "id": "entry-001",
+        "year": "2026",
+        "title": "Minecraft Modding",
+        "role": "Independent Developer",
+        "description": "Modding gave me the freedom to create things the way I wanted and actually implement them into a game that so many people play. Starting with Toast + More helped me develop my Java skills and showed me how existing systems can make programming much easier. Once I found the first project fairly straightforward, I wanted to challenge myself with something more difficult, which led me to start working on a new WorldGeneration mod which has not yet been released on Modrinth.",
+        "who": "tft11 (independent)",
+        "what": "Modding",
+        "where": "Modrinth",
+        "why": "Modding gave me the freedom to create things the way I wanted while developing my Java skills and teaching me how existing systems can be used to make programming easier.",
+        "tags": [
+          "Coding",
+          "Java",
+          "Minecraft",
+          "game development"
+        ],
+        "media": [
+          {
+            "type": "image",
+            "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1788534800/Screenshot_2026-09-04_161220.png",
+            "alt": "Modrinth Mod",
+            "caption": ""
+          }
+        ]
+      },
+
+      {
+        "id": "entry-mtpuu4bmpmao",
+        "year": "2026",
+        "title": "Unity",
+        "role": "Independent Developer",
+        "description": "Unity gave me the opportunity to explore game development and learn how different parts of a game fit together. Working with C#, 3D models, physics and AI was very different from what I had done before, and I found it really interesting to see how everything worked together. Although I didn't finish the project, I learnt a lot from making it and plan to return to Unity in the future with a simpler idea.",
+        "who": "tft11 (Independent)",
+        "what": "3D Game Development",
+        "where": "Unity 6.5",
+        "why": "Unity gave me the opportunity to explore game development, learn how different systems fit together, and experiment with things like 3D models, physics and AI.",
+        "tags": [
+          "game development",
+          "coding",
+          "c#"
+        ],
+        "media": []
+      },
+
+      {
+        "id": "entry-mtpupziq2y7z",
+        "year": "2026+",
+        "title": "AI and Machine Learning",
+        "role": "AI/ML Student",
+        "description": "Learning about AI and machine learning has given me a better understanding of how AI models make predictions and how much they can actually achieve. Working with real datasets and seeing how accurate my models could become was really interesting, but it also showed me that AI isn't automatically as accurate as it can seem and that models still need to be improved. I'm especially interested in understanding how AI can become more human-like and how far that technology can eventually go.",
+        "who": "tft11 (independent)",
+        "what": "AI/ML Learning",
+        "where": "Python/Scikit-learn",
+        "why": "Learning AI and machine learning has helped me understand how AI makes decisions and how it can be improved, while inspiring me to explore how human-like AI could become in the future.",
+        "tags": [
+          "numpy",
+          "pandas",
+          "scikit-learn",
+          "coding",
+          "ai",
+          "ml"
+        ],
+        "media": []
       }
-    ]
-  },
-  {
-    "id": "entry-mtpuu4bmpmao",
-    "year": "2026",
-    "title": "Unity",
-    "role": "Independent Developer",
-    "description": "Unity gave me the opportunity to explore game development and learn how different parts of a game fit together. Working with C#, 3D models, physics and AI was very different from what I had done before, and I found it really interesting to see how everything worked together. Although I didn't finish the project, I learnt a lot from making it and plan to return to Unity in the future with a simpler idea.",
-    "who": "tft11 (Independent)",
-    "what": "3D Game Development",
-    "where": "Unity 6.5",
-    "why": "Unity gave me the opportunity to explore game development, learn how different systems fit together, and experiment with things like 3D models, physics and AI.",
-    "tags": [
-      "game development",
-      "coding",
-      "c#"
-    ],
-    "media": []
-  },
-  {
-    "id": "entry-mtpupziq2y7z",
-    "year": "2026+",
-    "title": "AI and Machine Learning",
-    "role": "AI/ML Student",
-    "description": "Learning about AI and machine learning has given me a better understanding of how AI models make predictions and how much they can actually achieve. Working with real datasets and seeing how accurate my models could become was really interesting, but it also showed me that AI isn't automatically as accurate as it can seem and that models still need to be improved. I'm especially interested in understanding how AI can become more human-like and how far that technology can eventually go.",
-    "who": "tft11 (independent)",
-    "what": "AI/ML Learning",
-    "where": "Python/Scikit-learn",
-    "why": "Learning AI and machine learning has helped me understand how AI makes decisions and how it can be improved, while inspiring me to explore how human-like AI could become in the future.",
-    "tags": [
-      "numpy",
-      "pandas",
-      "scikit-learn",
-      "coding",
-      "ai",
-      "ml"
-    ],
-    "media": []
-  }
-];
+
+    ];
+
 
     function getEntries() {
+
       try {
+
         const stored = localStorage.getItem(TIMELINE_DATA_KEY);
+
         if (stored) {
+
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+
         }
+
       } catch (e) {}
+
       return DEFAULT_ENTRIES;
+
     }
 
+
     // ── State ──
+
     const entries = getEntries();
+
     let activeIndex = 0;
     let lightboxOpen = false;
     let lightboxMediaIndex = 0;
-    let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const prefersReducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 
     // ── DOM refs ──
+
     const strip = document.getElementById('timelineStrip');
-    const scrollTrack = document.getElementById('scrollTrack');
     const navDotsEl = document.getElementById('navDots');
     const progressLabel = document.getElementById('progressLabel');
+
     const lightbox = document.getElementById('lightbox');
     const lightboxClose = document.getElementById('lightboxClose');
     const lightboxPrev = document.getElementById('lightboxPrev');
     const lightboxNext = document.getElementById('lightboxNext');
-    const scrollHint = document.getElementById('scrollHint');
+
     const openBtn = document.getElementById('openBtn');
     const themeToggle = document.getElementById('themeToggle');
 
+
     // ── Theme ──
-    const savedTheme = localStorage.getItem('portfolio_theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    const savedTheme =
+      localStorage.getItem('portfolio_theme') || 'light';
+
+    document.documentElement.setAttribute(
+      'data-theme',
+      savedTheme
+    );
 
     themeToggle.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('portfolio_theme', next);
+
+      const current =
+        document.documentElement.getAttribute('data-theme');
+
+      const next =
+        current === 'dark' ? 'light' : 'dark';
+
+      document.documentElement.setAttribute(
+        'data-theme',
+        next
+      );
+
+      localStorage.setItem(
+        'portfolio_theme',
+        next
+      );
+
     });
 
-    // ── Build panels ──
+
+    // ── Build media elements ──
+
     function buildMediaEl(item, isMain = false) {
+
       const wrap = document.createElement('div');
+
       wrap.style.position = 'relative';
       wrap.style.width = '100%';
       wrap.style.height = '100%';
 
+
       if (item.type === 'image') {
+
         const img = document.createElement('img');
+
         img.src = item.url;
         img.alt = item.alt || '';
         img.loading = 'lazy';
+
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
         img.style.display = 'block';
+
         wrap.appendChild(img);
-      } else if (item.type === 'youtube') {
-        const badge = document.createElement('span');
-        badge.className = 'media-type-badge';
-        badge.textContent = 'Video';
-        badge.setAttribute('aria-hidden', 'true');
-        const id = item.url.match(/(?:v=|youtu\.be\/)([^&\s]+)/)?.[1];
-        if (isMain && id) {
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube-nocookie.com/embed/${id}`;
-          iframe.title = item.alt || 'YouTube video';
-          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.style.width = '100%';
-          iframe.style.height = '100%';
-          iframe.style.border = 'none';
-          wrap.appendChild(iframe);
-        } else {
-          const img = document.createElement('img');
-          const vid = item.url.match(/(?:v=|youtu\.be\/)([^&\s]+)/)?.[1];
-          img.src = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : '';
-          img.alt = item.alt || 'Video thumbnail';
-          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-          wrap.appendChild(img);
-          wrap.appendChild(badge);
-        }
-      } else if (item.type === 'vimeo') {
-        const badge = document.createElement('span');
-        badge.className = 'media-type-badge';
-        badge.textContent = 'Video';
-        badge.setAttribute('aria-hidden', 'true');
-        const id = item.url.match(/vimeo\.com\/(\d+)/)?.[1];
-        if (isMain && id) {
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://player.vimeo.com/video/${id}`;
-          iframe.title = item.alt || 'Vimeo video';
-          iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.style.width = '100%';
-          iframe.style.height = '100%';
-          iframe.style.border = 'none';
-          wrap.appendChild(iframe);
-        } else {
-          const placeholder = document.createElement('div');
-          placeholder.style.cssText = 'width:100%;height:100%;background:var(--c-bg-alt);display:flex;align-items:center;justify-content:center;';
-          placeholder.setAttribute('aria-label', item.alt || 'Vimeo video');
-          wrap.appendChild(placeholder);
-          wrap.appendChild(badge);
-        }
-      } else if (item.type === 'video') {
-        const badge = document.createElement('span');
-        badge.className = 'media-type-badge';
-        badge.textContent = 'Video';
-        badge.setAttribute('aria-hidden', 'true');
-        const video = document.createElement('video');
-        video.src = item.url;
-        video.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-        video.setAttribute('controls', '');
-        video.setAttribute('preload', 'none');
-        if (item.alt) video.setAttribute('aria-label', item.alt);
-        wrap.appendChild(video);
-        wrap.appendChild(badge);
+
       }
 
+
+      else if (item.type === 'youtube') {
+
+        const badge = document.createElement('span');
+
+        badge.className = 'media-type-badge';
+        badge.textContent = 'Video';
+        badge.setAttribute('aria-hidden', 'true');
+
+
+        const id =
+          item.url.match(
+            /(?:v=|youtu\.be\/)([^&\s]+)/
+          )?.[1];
+
+
+        if (isMain && id) {
+
+          const iframe =
+            document.createElement('iframe');
+
+          iframe.src =
+            `https://www.youtube-nocookie.com/embed/${id}`;
+
+          iframe.title =
+            item.alt || 'YouTube video';
+
+          iframe.allow =
+            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+
+          iframe.setAttribute(
+            'allowfullscreen',
+            ''
+          );
+
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.border = 'none';
+
+          wrap.appendChild(iframe);
+
+        }
+
+        else {
+
+          const img =
+            document.createElement('img');
+
+          const vid =
+            item.url.match(
+              /(?:v=|youtu\.be\/)([^&\s]+)/
+            )?.[1];
+
+          img.src =
+            vid
+              ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg`
+              : '';
+
+          img.alt =
+            item.alt || 'Video thumbnail';
+
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.style.display = 'block';
+
+          wrap.appendChild(img);
+          wrap.appendChild(badge);
+
+        }
+
+      }
+
+
+      else if (item.type === 'vimeo') {
+
+        const badge = document.createElement('span');
+
+        badge.className = 'media-type-badge';
+        badge.textContent = 'Video';
+        badge.setAttribute('aria-hidden', 'true');
+
+
+        const id =
+          item.url.match(
+            /vimeo\.com\/(\d+)/
+          )?.[1];
+
+
+        if (isMain && id) {
+
+          const iframe =
+            document.createElement('iframe');
+
+          iframe.src =
+            `https://player.vimeo.com/video/${id}`;
+
+          iframe.title =
+            item.alt || 'Vimeo video';
+
+          iframe.allow =
+            'autoplay; fullscreen; picture-in-picture';
+
+          iframe.setAttribute(
+            'allowfullscreen',
+            ''
+          );
+
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.border = 'none';
+
+          wrap.appendChild(iframe);
+
+        }
+
+        else {
+
+          const placeholder =
+            document.createElement('div');
+
+          placeholder.style.width = '100%';
+          placeholder.style.height = '100%';
+          placeholder.style.background =
+            'var(--c-bg-alt)';
+          placeholder.style.display = 'flex';
+          placeholder.style.alignItems = 'center';
+          placeholder.style.justifyContent = 'center';
+
+          placeholder.setAttribute(
+            'aria-label',
+            item.alt || 'Vimeo video'
+          );
+
+          wrap.appendChild(placeholder);
+          wrap.appendChild(badge);
+
+        }
+
+      }
+
+
+      else if (item.type === 'video') {
+
+        const badge = document.createElement('span');
+
+        badge.className = 'media-type-badge';
+        badge.textContent = 'Video';
+        badge.setAttribute('aria-hidden', 'true');
+
+
+        const video =
+          document.createElement('video');
+
+        video.src = item.url;
+
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        video.style.display = 'block';
+
+        video.setAttribute('controls', '');
+        video.setAttribute('preload', 'none');
+
+        if (item.alt) {
+          video.setAttribute(
+            'aria-label',
+            item.alt
+          );
+        }
+
+        wrap.appendChild(video);
+        wrap.appendChild(badge);
+
+      }
+
+
       return wrap;
+
     }
 
+
+    // ── Build timeline panels ──
+
     function renderPanels() {
+
       strip.innerHTML = '';
       navDotsEl.innerHTML = '';
 
+
       // Intro panel
-      const intro = document.createElement('div');
+
+      const intro =
+        document.createElement('div');
+
       intro.className = 'intro-panel';
       intro.setAttribute('aria-hidden', 'true');
+
       intro.innerHTML = `
-        <p class="intro-panel__eyebrow">TFT11 - Work &amp; Practice</p>
-        <h1 class="intro-panel__heading">Just<br>A Bunch<br><em>of Coding</em></h1>
-        <p class="intro-panel__sub">A visual record of skills, projects and milestones — scroll to begin.</p>
+
+        <p class="intro-panel__eyebrow">
+          TFT11 - Work &amp; Practice
+        </p>
+
+        <div class="intro-heading-wrap">
+  <div class="intro-square" aria-hidden="true"></div>
+
+  <h1 class="intro-panel__heading">
+    Just<br>
+    A Bunch<br>
+    <em>of Coding</em>
+  </h1>
+</div>
+
+        <p class="intro-panel__sub">
+          A visual record of skills, projects and milestones.
+        </p>
+
         <span class="intro-panel__cta">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          Scroll to navigate
+
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+
+          Explore timeline
+
         </span>
-        <div class="scroll-hint" aria-hidden="true">
-          <span class="scroll-hint__text">Scroll</span>
-          <span class="scroll-hint__line"></span>
-        </div>
+
       `;
+
       strip.appendChild(intro);
 
+
+      // Timeline entries
+
       entries.forEach((entry, i) => {
-        // Panel
-        const panel = document.createElement('div');
+
+        const panel =
+          document.createElement('div');
+
+
         panel.className = 'timeline-panel';
-        panel.setAttribute('role', 'listitem');
-        panel.setAttribute('aria-label', `${entry.year}: ${entry.title}`);
-        panel.setAttribute('tabindex', i === 0 ? '0' : '-1');
+
+        /*
+          Explicitly alternate sides:
+
+          i = 0 → left
+          i = 1 → right
+          i = 2 → left
+          i = 3 → right
+        */
+
+        panel.classList.add(
+          i % 2 === 0
+            ? 'timeline-panel--left'
+            : 'timeline-panel--right'
+        );
+
+
+        panel.setAttribute(
+          'role',
+          'listitem'
+        );
+
+        panel.setAttribute(
+          'aria-label',
+          `${entry.year}: ${entry.title}`
+        );
+
+        panel.setAttribute(
+          'tabindex',
+          i === 0 ? '0' : '-1'
+        );
+
         panel.dataset.index = i;
-        if (i === 0) panel.classList.add('is-active');
 
-        const firstMedia = entry.media?.[0];
-        const mediaCount = entry.media?.length || 0;
 
-        panel.innerHTML = `
-          <div class="panel-upper">
-            <div class="panel-media-thumb" aria-hidden="true">
-              ${firstMedia ? '' : ''}
-            </div>
-          </div>
-
-          <div class="panel-year">
-            <button class="panel-year__dot" aria-label="Go to ${entry.year}: ${entry.title}" tabindex="-1"></button>
-            <span class="panel-year__label mono">${entry.year}</span>
-          </div>
-
-          <div class="panel-lower">
-            <div class="panel-title-block">
-              <p class="panel-title-block__role">${entry.role}</p>
-              <h2 class="panel-title-block__title">${entry.title}</h2>
-              <div class="panel-title-block__tags" aria-label="Tags">
-                ${(entry.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
-              </div>
-            </div>
-          </div>
-
-          <span class="panel-index mono" aria-hidden="true">${String(i + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}</span>
-        `;
-
-        // Build thumb media
-        if (firstMedia) {
-          const thumb = panel.querySelector('.panel-media-thumb');
-          thumb.appendChild(buildMediaEl(firstMedia, false));
-          if (mediaCount > 1) {
-            const countBadge = document.createElement('span');
-            countBadge.className = 'panel-media-thumb__count';
-            countBadge.setAttribute('aria-hidden', 'true');
-            countBadge.textContent = `+${mediaCount - 1}`;
-            thumb.appendChild(countBadge);
-          }
+        if (i === 0) {
+          panel.classList.add('is-active');
         }
 
-        // Click to open lightbox
-        panel.addEventListener('click', () => {
-          setActive(i);
-          openLightbox(i);
-        });
-        panel.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openLightbox(i);
+
+        const firstMedia =
+          entry.media?.[0];
+
+        const mediaCount =
+          entry.media?.length || 0;
+
+
+        panel.innerHTML = `
+
+          <div class="panel-upper">
+
+            <div
+              class="panel-media-thumb"
+              aria-hidden="true"
+            ></div>
+
+            <div
+              class="panel-upper__tags"
+              aria-label="Tags"
+            >
+              ${(entry.tags || [])
+                .map(
+                  t => `<span class="tag">${t}</span>`
+                )
+                .join('')}
+            </div>
+
+          </div>
+
+
+          <div class="panel-year">
+
+            <button
+              class="panel-year__dot"
+              aria-label="Go to ${entry.year}: ${entry.title}"
+              tabindex="-1"
+            ></button>
+
+            <span class="panel-year__label mono">
+              ${entry.year}
+            </span>
+
+          </div>
+
+
+          <div class="panel-lower">
+
+            <div class="panel-title-block">
+
+              <p class="panel-title-block__role">
+                ${entry.role || ''}
+              </p>
+
+              <h2 class="panel-title-block__title">
+                ${entry.title}
+              </h2>
+
+            </div>
+
+          </div>
+
+
+          
+
+        `;
+
+
+        // Build thumbnail media
+
+        if (firstMedia) {
+
+          const thumb =
+            panel.querySelector(
+              '.panel-media-thumb'
+            );
+
+          thumb.appendChild(
+            buildMediaEl(
+              firstMedia,
+              false
+            )
+          );
+
+
+          if (mediaCount > 1) {
+
+            const countBadge =
+              document.createElement('span');
+
+            countBadge.className =
+              'panel-media-thumb__count';
+
+            countBadge.setAttribute(
+              'aria-hidden',
+              'true'
+            );
+
+            countBadge.textContent =
+              `+${mediaCount - 1}`;
+
+            thumb.appendChild(
+              countBadge
+            );
+
           }
-        });
+
+        }
+
+
+        // Click to open lightbox
+
+        panel.addEventListener(
+          'click',
+          () => {
+
+            setActive(i);
+            openLightbox(i);
+
+          }
+        );
+
+
+        // Keyboard open
+
+        panel.addEventListener(
+          'keydown',
+          e => {
+
+            if (
+              e.key === 'Enter' ||
+              e.key === ' '
+            ) {
+
+              e.preventDefault();
+
+              openLightbox(i);
+
+            }
+            
+          }
+        );
+
+
+        const introHeadingWrap =
+                    document.querySelector('.intro-heading-wrap');
+
+        const introSquare =
+                    document.querySelector('.intro-square');
+
+        let introSquareRotation = 45;
+
+        if (introHeadingWrap && introSquare) {
+
+              introHeadingWrap.addEventListener(
+                      'mouseenter',
+                        () => {
+
+                      introSquareRotation += 90;
+
+                      introSquare.style.transform =
+                              `translate(-50%, -50%) rotate(${introSquareRotation}deg)`;
+
+                              }
+                );
+
+        }
 
         strip.appendChild(panel);
 
         // Nav dot
-        const dot = document.createElement('button');
-        dot.className = 'nav-dot' + (i === 0 ? ' is-active' : '');
-        dot.setAttribute('aria-label', `Go to ${entry.year}: ${entry.title}`);
+
+        const dot =
+          document.createElement('button');
+
+        dot.className =
+          'nav-dot' +
+          (i === 0 ? ' is-active' : '');
+
+        dot.setAttribute(
+          'aria-label',
+          `Go to ${entry.year}: ${entry.title}`
+        );
+
         dot.dataset.index = i;
-        dot.addEventListener('click', () => {
-          scrollToIndex(i);
-        });
+
+
+        dot.addEventListener(
+          'click',
+          () => {
+            scrollToIndex(i);
+          }
+        );
+
+
         navDotsEl.appendChild(dot);
+
       });
+
     }
+
 
     renderPanels();
 
-    // ── GSAP ScrollTrigger ──
-    gsap.registerPlugin(ScrollTrigger);
 
-    const panels = () => document.querySelectorAll('.timeline-panel');
-    const dots = () => document.querySelectorAll('.nav-dot');
+    // ── Panel helpers ──
 
-    // Set scroll track height: enough to scroll through all entries
-    const totalEntries = entries.length + 1; // +1 for intro
-    scrollTrack.style.height = `${totalEntries * 100}vh`;
+    const panels = () =>
+      document.querySelectorAll(
+        '.timeline-panel'
+      );
 
-    // Horizontal scroll
-    const totalWidth = () => strip.scrollWidth - window.innerWidth;
+    const dots = () =>
+      document.querySelectorAll(
+        '.nav-dot'
+      );
 
-    function initScrollTrigger() {
-      ScrollTrigger.getAll().forEach(t => t.kill());
 
-      gsap.to(strip, {
-        x: () => -totalWidth(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: scrollTrack,
-          start: 'top top',
-          end: () => `+=${scrollTrack.offsetHeight - window.innerHeight}`,
-          scrub: prefersReducedMotion ? 0 : 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            // Determine active panel from progress
-            const progress = self.progress;
-            const panelEls = panels();
-            const idx = Math.round(progress * (entries.length - 1 + 0.5));
-            const clampedIdx = Math.max(0, Math.min(entries.length - 1, Math.floor(progress * entries.length)));
+    // ── Vertical scrolling ──
 
-            if (clampedIdx !== activeIndex && !lightboxOpen) {
-              setActive(clampedIdx);
+    /*
+      IntersectionObserver determines which panel is
+      currently closest to the centre of the viewport.
+    */
+
+    const timelineObserver =
+      new IntersectionObserver(
+
+        observed => {
+
+          let bestPanel = null;
+          let bestRatio = 0;
+
+
+          observed.forEach(item => {
+
+            if (
+              item.isIntersecting &&
+              item.intersectionRatio > bestRatio
+            ) {
+
+              bestRatio =
+                item.intersectionRatio;
+
+              bestPanel =
+                item.target;
+
             }
 
-            // Hide scroll hint after first movement
-            if (progress > 0.01) {
-              gsap.to(scrollHint, { opacity: 0, duration: 0.3 });
+          });
+
+
+          if (
+            bestPanel &&
+            !lightboxOpen
+          ) {
+
+            const index =
+              Number(
+                bestPanel.dataset.index
+              );
+
+
+            if (
+              index !== activeIndex
+            ) {
+
+              setActive(index);
+
             }
+
           }
-        }
-      });
-    }
 
-    initScrollTrigger();
-    window.addEventListener('resize', () => {
-      scrollTrack.style.height = `${totalEntries * 100}vh`;
-      ScrollTrigger.refresh();
+        },
+
+        {
+          threshold: [
+            0.25,
+            0.5,
+            0.75
+          ],
+
+          rootMargin:
+            '-25% 0px -25% 0px'
+        }
+
+      );
+
+
+    panels().forEach(panel => {
+
+      timelineObserver.observe(panel);
+
     });
 
+
     // ── Active state ──
+
     function setActive(idx) {
-      if (idx < 0 || idx >= entries.length) return;
+
+      if (
+        idx < 0 ||
+        idx >= entries.length
+      ) {
+        return;
+      }
+
+
       activeIndex = idx;
 
-      panels().forEach((p, i) => {
-        p.classList.toggle('is-active', i === idx);
-        p.setAttribute('tabindex', i === idx ? '0' : '-1');
-      });
 
-      dots().forEach((d, i) => {
-        d.classList.toggle('is-active', i === idx);
-      });
+      panels().forEach(
+        (p, i) => {
 
-      progressLabel.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
+          p.classList.toggle(
+            'is-active',
+            i === idx
+          );
+
+          p.setAttribute(
+            'tabindex',
+            i === idx ? '0' : '-1'
+          );
+
+        }
+      );
+
+
+      dots().forEach(
+        (d, i) => {
+
+          d.classList.toggle(
+            'is-active',
+            i === idx
+          );
+
+        }
+      );
+
+
+      progressLabel.textContent =
+        `${String(idx + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
+
     }
+
 
     // ── Scroll to index ──
-    function scrollToIndex(idx) {
-      const progress = idx / (entries.length - 1);
-      const trackHeight = scrollTrack.offsetHeight - window.innerHeight;
-      const headerOffset = document.querySelector('.site-header').offsetHeight;
-      const targetY = progress * trackHeight + headerOffset;
 
-      if (prefersReducedMotion) {
-        window.scrollTo(0, targetY);
-      } else {
-        gsap.to(window, {
-          scrollTo: targetY,
-          duration: 0.8,
-          ease: 'expo.inOut'
-        });
-      }
+    function scrollToIndex(idx) {
+
+      const panel =
+        panels()[idx];
+
+      if (!panel) return;
+
+
+      setActive(idx);
+
+
+      panel.scrollIntoView({
+
+        behavior:
+          prefersReducedMotion
+            ? 'auto'
+            : 'smooth',
+
+        block: 'center'
+
+      });
+
     }
 
+
     // ── Lightbox ──
+
     function openLightbox(idx) {
-      const entry = entries[idx];
+
+      const entry =
+        entries[idx];
+
       if (!entry) return;
+
+
       lightboxOpen = true;
       lightboxMediaIndex = 0;
 
-      document.getElementById('lightboxYear').textContent = entry.year;
-      document.getElementById('lightboxTitle').textContent = entry.title;
-      document.getElementById('lightboxRole').textContent = entry.role || '';
-      document.getElementById('lightboxDesc').textContent = entry.description || '';
+
+      document.getElementById(
+        'lightboxYear'
+      ).textContent =
+        entry.year || '';
+
+
+      document.getElementById(
+        'lightboxTitle'
+      ).textContent =
+        entry.title || '';
+
+
+      document.getElementById(
+        'lightboxRole'
+      ).textContent =
+        entry.role || '';
+
+
+      document.getElementById(
+        'lightboxDesc'
+      ).textContent =
+        entry.description || '';
+
 
       // Facts
-      const factsEl = document.getElementById('lightboxFacts');
-      const facts = [
-        { label: 'Who', value: entry.who },
-        { label: 'What', value: entry.what },
-        { label: 'Where', value: entry.where },
-        { label: 'Why', value: entry.why }
-      ].filter(f => f.value);
 
-      factsEl.innerHTML = facts.map(f => `
-        <div class="fact-row">
-          <span class="fact-row__label">${f.label}</span>
-          <span class="fact-row__value">${f.value}</span>
-        </div>
-      `).join('');
+      const factsEl =
+        document.getElementById(
+          'lightboxFacts'
+        );
+
+
+      const facts = [
+
+        {
+          label: 'Who',
+          value: entry.who
+        },
+
+        {
+          label: 'What',
+          value: entry.what
+        },
+
+        {
+          label: 'Where',
+          value: entry.where
+        },
+
+        {
+          label: 'Why',
+          value: entry.why
+        }
+
+      ].filter(
+        f => f.value
+      );
+
+
+      factsEl.innerHTML =
+        facts
+          .map(
+            f => `
+
+              <div class="fact-row">
+
+                <span class="fact-row__label">
+                  ${f.label}
+                </span>
+
+                <span class="fact-row__value">
+                  ${f.value}
+                </span>
+
+              </div>
+
+            `
+          )
+          .join('');
+
 
       // Tags
-      const tagsEl = document.getElementById('lightboxTags');
-      tagsEl.innerHTML = (entry.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+
+      const tagsEl =
+        document.getElementById(
+          'lightboxTags'
+        );
+
+
+      tagsEl.innerHTML =
+        (entry.tags || [])
+          .map(
+            t =>
+              `<span class="tag">${t}</span>`
+          )
+          .join('');
+
 
       // Media
-      renderLightboxMedia(entry, 0);
 
-      // Nav buttons
-      lightboxPrev.disabled = idx === 0;
-      lightboxNext.disabled = idx === entries.length - 1;
+      renderLightboxMedia(
+        entry,
+        0
+      );
 
-      lightbox.classList.add('is-open');
-      lightbox.setAttribute('aria-hidden', 'false');
+
+      // Navigation buttons
+
+      lightboxPrev.disabled =
+        idx === 0;
+
+      lightboxNext.disabled =
+        idx === entries.length - 1;
+
+
+      // Open
+
+      lightbox.classList.add(
+        'is-open'
+      );
+
+      lightbox.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
 
       if (!prefersReducedMotion) {
-        gsap.fromTo(lightbox,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.4, ease: 'expo.out' }
+
+        gsap.fromTo(
+
+          lightbox,
+
+          {
+            opacity: 0,
+            y: 20
+          },
+
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: 'expo.out'
+          }
+
         );
-      } else {
-        lightbox.style.opacity = 1;
+
       }
 
+      else {
+
+        lightbox.style.opacity = 1;
+
+      }
+
+
       lightboxClose.focus();
+
     }
 
-    function renderLightboxMedia(entry, mediaIdx) {
-      const main = document.getElementById('lightboxMain');
-      const grid = document.getElementById('lightboxGrid');
+
+    // ── Lightbox media ──
+
+    function renderLightboxMedia(
+      entry,
+      mediaIdx
+    ) {
+
+      const main =
+        document.getElementById(
+          'lightboxMain'
+        );
+
+      const grid =
+        document.getElementById(
+          'lightboxGrid'
+        );
+
+
       main.innerHTML = '';
       grid.innerHTML = '';
 
-      const media = entry.media || [];
-      if (!media.length) return;
 
-      // Main
-      main.appendChild(buildMediaEl(media[mediaIdx], true));
+      const media =
+        entry.media || [];
 
-      // Grid thumbnails (if >1)
-      if (media.length > 1) {
-        media.forEach((item, i) => {
-          const thumb = document.createElement('div');
-          thumb.className = 'lightbox__media-thumb' + (i === mediaIdx ? ' is-active' : '');
-          thumb.setAttribute('role', 'listitem');
-          thumb.setAttribute('aria-label', item.alt || `Media ${i + 1}`);
-          thumb.setAttribute('tabindex', '0');
-          thumb.appendChild(buildMediaEl(item, false));
-          thumb.addEventListener('click', () => {
-            lightboxMediaIndex = i;
-            renderLightboxMedia(entry, i);
-          });
-          thumb.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              lightboxMediaIndex = i;
-              renderLightboxMedia(entry, i);
-            }
-          });
-          grid.appendChild(thumb);
-        });
+
+      if (!media.length) {
+
+        return;
+
       }
+
+
+      // Main media
+
+      main.appendChild(
+        buildMediaEl(
+          media[mediaIdx],
+          true
+        )
+      );
+
+
+      // Thumbnail grid
+
+      if (media.length > 1) {
+
+        media.forEach(
+          (item, i) => {
+
+            const thumb =
+              document.createElement(
+                'div'
+              );
+
+
+            thumb.className =
+              'lightbox__media-thumb' +
+              (
+                i === mediaIdx
+                  ? ' is-active'
+                  : ''
+              );
+
+
+            thumb.setAttribute(
+              'role',
+              'listitem'
+            );
+
+
+            thumb.setAttribute(
+              'aria-label',
+              item.alt ||
+              `Media ${i + 1}`
+            );
+
+
+            thumb.setAttribute(
+              'tabindex',
+              '0'
+            );
+
+
+            thumb.appendChild(
+              buildMediaEl(
+                item,
+                false
+              )
+            );
+
+
+            thumb.addEventListener(
+              'click',
+              () => {
+
+                lightboxMediaIndex =
+                  i;
+
+                renderLightboxMedia(
+                  entry,
+                  i
+                );
+
+              }
+            );
+
+
+            thumb.addEventListener(
+              'keydown',
+              e => {
+
+                if (
+                  e.key === 'Enter' ||
+                  e.key === ' '
+                ) {
+
+                  e.preventDefault();
+
+                  lightboxMediaIndex =
+                    i;
+
+                  renderLightboxMedia(
+                    entry,
+                    i
+                  );
+
+                }
+
+              }
+            );
+
+
+            grid.appendChild(
+              thumb
+            );
+
+          }
+        );
+
+      }
+
     }
+
+
+    // ── Close lightbox ──
 
     function closeLightbox() {
+
       lightboxOpen = false;
+
+
       if (!prefersReducedMotion) {
-        gsap.to(lightbox, { opacity: 0, y: 10, duration: 0.25, ease: 'expo.in', onComplete: () => {
-          lightbox.classList.remove('is-open');
-          lightbox.setAttribute('aria-hidden', 'true');
-          lightbox.scrollTop = 0;
-        }});
-      } else {
-        lightbox.classList.remove('is-open');
-        lightbox.setAttribute('aria-hidden', 'true');
+
+        gsap.to(
+
+          lightbox,
+
+          {
+            opacity: 0,
+            y: 10,
+            duration: 0.25,
+            ease: 'expo.in',
+
+            onComplete: () => {
+
+              lightbox.classList.remove(
+                'is-open'
+              );
+
+              lightbox.setAttribute(
+                'aria-hidden',
+                'true'
+              );
+
+              lightbox.scrollTop = 0;
+
+            }
+
+          }
+
+        );
+
       }
+
+      else {
+
+        lightbox.classList.remove(
+          'is-open'
+        );
+
+        lightbox.setAttribute(
+          'aria-hidden',
+          'true'
+        );
+
+      }
+
+
       panels()[activeIndex]?.focus();
+
     }
 
-    lightboxClose.addEventListener('click', closeLightbox);
-    openBtn.addEventListener('click', () => openLightbox(activeIndex));
 
-    lightboxPrev.addEventListener('click', () => {
-      if (activeIndex > 0) {
-        const newIdx = activeIndex - 1;
-        setActive(newIdx);
-        openLightbox(newIdx);
-      }
-    });
+    // ── Lightbox controls ──
 
-    lightboxNext.addEventListener('click', () => {
-      if (activeIndex < entries.length - 1) {
-        const newIdx = activeIndex + 1;
-        setActive(newIdx);
-        openLightbox(newIdx);
+    lightboxClose.addEventListener(
+      'click',
+      closeLightbox
+    );
+
+
+    openBtn.addEventListener(
+      'click',
+      () => {
+        openLightbox(
+          activeIndex
+        );
       }
-    });
+    );
+
+
+    lightboxPrev.addEventListener(
+      'click',
+      () => {
+
+        if (activeIndex > 0) {
+
+          const newIdx =
+            activeIndex - 1;
+
+          setActive(newIdx);
+          openLightbox(newIdx);
+
+        }
+
+      }
+    );
+
+
+    lightboxNext.addEventListener(
+      'click',
+      () => {
+
+        if (
+          activeIndex <
+          entries.length - 1
+        ) {
+
+          const newIdx =
+            activeIndex + 1;
+
+          setActive(newIdx);
+          openLightbox(newIdx);
+
+        }
+
+      }
+    );
+
 
     // ── Keyboard navigation ──
-    document.addEventListener('keydown', e => {
-      if (lightboxOpen) {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') lightboxPrev.click();
-        if (e.key === 'ArrowRight') lightboxNext.click();
-        return;
+
+    document.addEventListener(
+      'keydown',
+      e => {
+
+        if (lightboxOpen) {
+
+          if (
+            e.key === 'Escape'
+          ) {
+
+            closeLightbox();
+
+          }
+
+
+          if (
+            e.key === 'ArrowLeft'
+          ) {
+
+            lightboxPrev.click();
+
+          }
+
+
+          if (
+            e.key === 'ArrowRight'
+          ) {
+
+            lightboxNext.click();
+
+          }
+
+
+          return;
+
+        }
+
+
+        if (
+          e.key === 'ArrowRight' ||
+          e.key === 'ArrowDown'
+        ) {
+
+          e.preventDefault();
+
+
+          if (
+            activeIndex <
+            entries.length - 1
+          ) {
+
+            scrollToIndex(
+              activeIndex + 1
+            );
+
+          }
+
+        }
+
+
+        if (
+          e.key === 'ArrowLeft' ||
+          e.key === 'ArrowUp'
+        ) {
+
+          e.preventDefault();
+
+
+          if (
+            activeIndex > 0
+          ) {
+
+            scrollToIndex(
+              activeIndex - 1
+            );
+
+          }
+
+        }
+
+
+        if (
+          e.key === 'Enter' &&
+          !lightboxOpen
+        ) {
+
+          openLightbox(
+            activeIndex
+          );
+
+        }
+
       }
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (activeIndex < entries.length - 1) scrollToIndex(activeIndex + 1);
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (activeIndex > 0) scrollToIndex(activeIndex - 1);
-      }
-      if (e.key === 'Enter' && !lightboxOpen) {
-        openLightbox(activeIndex);
-      }
-    });
+    );
+
 
     // ── Trap focus in lightbox ──
-    lightbox.addEventListener('keydown', e => {
-      if (e.key !== 'Tab') return;
-      const focusable = lightbox.querySelectorAll('button:not([disabled]), [tabindex="0"], a[href], input, select, textarea');
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
 
-    // ── Initial active ──
+    lightbox.addEventListener(
+      'keydown',
+      e => {
+
+        if (
+          e.key !== 'Tab'
+        ) {
+          return;
+        }
+
+
+        const focusable =
+          lightbox.querySelectorAll(
+            'button:not([disabled]), [tabindex="0"], a[href], input, select, textarea'
+          );
+
+
+        const first =
+          focusable[0];
+
+        const last =
+          focusable[
+            focusable.length - 1
+          ];
+
+
+        if (
+          e.shiftKey
+        ) {
+
+          if (
+            document.activeElement ===
+            first
+          ) {
+
+            e.preventDefault();
+            last.focus();
+
+          }
+
+        }
+
+        else {
+
+          if (
+            document.activeElement ===
+            last
+          ) {
+
+            e.preventDefault();
+            first.focus();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    // ── Initial active entry ──
+
     setActive(0);
+
   </script>
+
 </body>
+
 </html>
