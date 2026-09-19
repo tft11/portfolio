@@ -1,13 +1,9 @@
-/* ============================================================
-   PORTFOLIO TIMELINE â€” Shared Design System
-   Swiss International / Editorial â€” Slammin Design
-   ============================================================ */
-
 /* --- Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
 
 @import url("https://api.fontshare.com/v2/css?f[]=switzer@400&f[]=khand@700&f[]=sentient@200,201,300,301,400,401,500,501,700,701&f[]=space-grotesk@300,400,500,600,700&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Electrolize&display=swap');
 /*
 font-family: 'Switzer', sans-serif;
 font-family: 'Khand', sans-serif;
@@ -27,10 +23,11 @@ font-family: 'Space Grotesk', sans-serif;
   --c-rule-strong: #1F5F99;   /* Strong borders / important lines */
   --c-accent:      #3B82C4;   /* Main blue accent */
   --c-accent-dim:  rgba(59, 130, 196, 0.12); /* Faded accent */
+  --c-intro-square: #B8D5ED;
 
   /* Type */
   --f-display: 'Space Grotesk', sans-serif;
-  --f-body:    'Sentient', serif;
+  --f-body:    'DM Sans', sans-serif;
   --f-mono:    'Switzer', sans-serif;
 
   /* Scale */
@@ -68,6 +65,9 @@ font-family: 'Space Grotesk', sans-serif;
   --timeline-h: 100vh;
   --panel-w: 100vw;
   --header-h: 64px;
+
+  
+  
 }
 
 /* Dark mode */
@@ -81,6 +81,7 @@ font-family: 'Space Grotesk', sans-serif;
     --c-rule-strong: #5BA4E6;   /* Strong borders / important lines */
     --c-accent:      #5BA4E6;   /* Main blue accent */
     --c-accent-dim:  rgba(91, 164, 230, 0.14); /* Faded accent */
+    --c-intro-square: #102A43;
 }
 
 /* --- Reset & Base --- */
@@ -88,7 +89,7 @@ font-family: 'Space Grotesk', sans-serif;
 
 html {
   font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+  /*-webkit-text-size-adjust: 100%;*/
   scroll-behavior: auto; /* GSAP handles scrolling */
 }
 
