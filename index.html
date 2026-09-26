@@ -43,13 +43,12 @@
 
     .timeline-axis {
       position: absolute;
-      top: 715px;
       bottom: 0;
       left: 50%;
       width: 1px;
       background: var(--c-rule-strong);
       transform: translateX(-50%);
-      z-index: 2;
+      z-index: 0;
       pointer-events: none;
     }
 
@@ -64,16 +63,16 @@
     /* ── Intro ── */
 
     .intro-panel {
-  width: 100%;
-  min-height: 75vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-8) max(8vw, var(--sp-16));
-  position: relative;
-  box-sizing: border-box;
-}
+      width: 100%;
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-8) max(8vw, var(--sp-16));
+      position: relative;
+      box-sizing: border-box;
+    }
 
     .intro-panel__eyebrow {
       font-family: var(--f-mono);
@@ -116,8 +115,13 @@
       text-transform: uppercase;
       color: var(--c-text);
       border-bottom: 1px solid var(--c-rule-strong);
+      border-top: none;
+      border-right: none;
+      border-left: none;
       padding-bottom: var(--sp-2);
       width: fit-content;
+      background: none;
+      /* border: none; */
     }
 
     /* ── Square ── */
@@ -138,8 +142,8 @@
 .intro-square {
   position: absolute;
 
-  width: 330px;
-  height: 330px;
+  width: min(60vw, 330px);
+  height: min(60vw, 330px);
 
   top: 50%;
   left: 50%;
@@ -158,8 +162,8 @@
 .intro-heading-wrap::after {
   content: "";
   position: absolute;
-  width: 330px;
-  height: 330px;
+  width: min(60vw, 330px);
+  height: min(60vw, 330px);
 
   top: 50%;
   left: 50%;
@@ -184,7 +188,7 @@
 
 .intro-panel__cta {
   position: relative;
-  z-index: 3;
+  z-index: 0;
   margin-top: var(--sp-6);
   transition:
     transform 300ms var(--ease-expo),
@@ -525,27 +529,52 @@
 
     @media (max-width: 700px) {
 
+      .site-header {
+        padding: 0 var(--sp-4);
+      }
+
       .timeline-axis {
-        left: 24px;
+        left: 50%;
+        z-index: 0;
+        top: 75vh;
       }
 
       .timeline-panel {
-        display: block;
+        display: flex;
+        flex-direction: column;
         min-height: auto;
-        padding: 80px 24px 100px 56px;
+        padding: 120px 16px 140px;
+        align-items: center;
       }
 
+      .panel-lower {
+        order: 1;
+    }
+
+      .panel-upper {
+        order: 2;
+    }
+
+      .timeline-nav-dots {
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+    }
+
       .panel-year {
-        left: 24px;
+        left: 50%;
         top: 40px;
         transform: translateX(-50%);
       }
 
       .panel-upper,
       .panel-lower {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: var(--sp-4) 0;
-        text-align: left !important;
+        text-align: center !important;
       }
 
       .panel-media-thumb {
@@ -563,6 +592,48 @@
 
       .kbd-hint {
         display: none;
+      }
+
+      .lightbox__header {
+        padding: var(--sp-4);
+      }
+
+      .lightbox__media-col {
+        padding: var(--sp-4);
+      }
+
+      .lightbox__info-col {
+        padding: var(--sp-4);
+      }
+
+      .lightbox__title {
+        font-size: 28px !important;
+        line-height: 1.05;
+      }
+
+      .fact-row__value {
+        font-size: var(--fs-xs);
+      }
+
+      .lightbox__description {
+        font-size: 14px !important;
+        line-height: 1.5;
+      }
+
+      .lightbox__close {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1rem !important;
+      }
+
+      .lightbox__nav {
+        position: sticky;
+        bottom: 0;
+        background: var(--c-bg);
+        padding: var(--sp-3) var(--sp-4);
+        margin: 0 calc(var(--sp-4) * -1);
+        border-top: 1px solid var(--c-rule);
+        z-index: 10;
       }
     }
 
@@ -820,13 +891,13 @@
 
 <body>
 
-  <a href="#timeline" class="skip-link">Skip to timeline</a>
+  <a href="https://tft.11.github.io/portfolio" class="skip-link">Skip to timeline</a>
 
   <!-- Site Header -->
 
   <header class="site-header" role="banner">
 
-    <a href="/" class="site-header__logo" aria-label="Portfolio home">
+    <a href="https://tft.11.github.io/portfolio" class="site-header__logo" aria-label="Portfolio home">
 
       <span class="site-header__logo-dot" aria-hidden="true"></span>
 
@@ -1137,73 +1208,94 @@
     const TIMELINE_DATA_KEY = 'portfolio_timeline_v1';
 
     const DEFAULT_ENTRIES = [
-
+  {
+    "id": "entry-001",
+    "year": "2026",
+    "title": "Minecraft Modding",
+    "role": "Independent Developer",
+    "description": "Modding gave me the freedom to create things the way I wanted and actually implement them into a game that so many people play. Starting with Toast + More helped me develop my Java skills and showed me how existing systems can make programming much easier. Once I found the first project fairly straightforward, I wanted to challenge myself with something more difficult, which led me to start working on a new WorldGeneration mod which has not yet been released on Modrinth.",
+    "who": "tft11 (independent)",
+    "what": "Modding",
+    "where": "Modrinth",
+    "why": "Modding gave me the freedom to create things the way I wanted while developing my Java skills and teaching me how existing systems can be used to make programming easier.",
+    "tags": [
+      "Coding",
+      "Java",
+      "Minecraft",
+      "game development"
+    ],
+    "media": [
       {
-        "id": "entry-001",
-        "year": "2026",
-        "title": "Minecraft Modding",
-        "role": "Independent Developer",
-        "description": "Modding gave me the freedom to create things the way I wanted and actually implement them into a game that so many people play. Starting with Toast + More helped me develop my Java skills and showed me how existing systems can make programming much easier. Once I found the first project fairly straightforward, I wanted to challenge myself with something more difficult, which led me to start working on a new WorldGeneration mod which has not yet been released on Modrinth.",
-        "who": "TFT11 (independent)",
-        "what": "Modding",
-        "where": "Modrinth",
-        "why": "Modding gave me the freedom to create things the way I wanted while developing my Java skills and teaching me how existing systems can be used to make programming easier.",
-        "tags": [
-          "Coding",
-          "Java",
-          "Minecraft",
-          "game development"
-        ],
-        "media": [
-          {
-            "type": "image",
-            "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1788534800/Screenshot_2026-09-04_161220.png",
-            "alt": "Modrinth Mod",
-            "caption": ""
-          }
-        ]
+        "type": "image",
+        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1788534800/Screenshot_2026-09-04_161220.png",
+        "alt": "Modrinth Mod",
+        "caption": ""
       },
-
       {
-        "id": "entry-mtpuu4bmpmao",
-        "year": "2026",
-        "title": "Unity",
-        "role": "Independent Developer",
-        "description": "Unity gave me the opportunity to explore game development and learn how different parts of a game fit together. Working with C#, 3D models, physics and AI was very different from what I had done before, and I found it really interesting to see how everything worked together. Although I didn't finish the project, I learnt a lot from making it and plan to return to Unity in the future with a simpler idea.",
-        "who": "TFT11 (Independent)",
-        "what": "3D Game Development",
-        "where": "Unity 6.5",
-        "why": "Unity gave me the opportunity to explore game development, learn how different systems fit together, and experiment with things like 3D models, physics and AI.",
-        "tags": [
-          "game development",
-          "coding",
-          "c#"
-        ],
-        "media": []
-      },
-
-      {
-        "id": "entry-mtpupziq2y7z",
-        "year": "2026+",
-        "title": "AI and Machine Learning",
-        "role": "AI/ML Student",
-        "description": "Learning about AI and machine learning has given me a better understanding of how AI models make predictions and how much they can actually achieve. Working with real datasets and seeing how accurate my models could become was really interesting, but it also showed me that AI isn't automatically as accurate as it can seem and that models still need to be improved. I'm especially interested in understanding how AI can become more human-like and how far that technology can eventually go.",
-        "who": "TFT11 (independent)",
-        "what": "AI/ML Learning",
-        "where": "Python/Scikit-learn",
-        "why": "Learning AI and machine learning has helped me understand how AI makes decisions and how it can be improved, while inspiring me to explore how human-like AI could become in the future.",
-        "tags": [
-          "numpy",
-          "pandas",
-          "scikit-learn",
-          "coding",
-          "ai",
-          "ml"
-        ],
-        "media": []
+        "type": "image",
+        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790008110/Screenshot_2026-09-20_122035.png",
+        "alt": "Modrinth Mod Workspace",
+        "caption": ""
       }
-
-    ];
+    ]
+  },
+  {
+    "id": "entry-mtpuu4bmpmao",
+    "year": "2026",
+    "title": "Unity",
+    "role": "Independent Developer",
+    "description": "Unity gave me the opportunity to explore game development and learn how different parts of a game fit together. Working with C#, 3D models, physics and AI was very different from what I had done before, and I found it really interesting to see how everything worked together. Although I didn't finish the project, I learnt a lot from making it and plan to return to Unity in the future with a simpler idea.",
+    "who": "tft11 (Independent)",
+    "what": "3D Game Development",
+    "where": "Unity 6.5",
+    "why": "Unity gave me the opportunity to explore game development, learn how different systems fit together, and experiment with things like 3D models, physics and AI.",
+    "tags": [
+      "coding",
+      "c#",
+      "game development"
+    ],
+    "media": []
+  },
+  {
+    "id": "entry-mtpupziq2y7z",
+    "year": "2026+",
+    "title": "AI and Machine Learning",
+    "role": "AI/ML Student",
+    "description": "Learning about AI and machine learning has given me a better understanding of how AI models make predictions and how much they can actually achieve. Working with real datasets and seeing how accurate my models could become was really interesting, but it also showed me that AI isn't automatically as accurate as it can seem and that models still need to be improved. I'm especially interested in understanding how AI can become more human-like and how far that technology can eventually go.",
+    "who": "tft11 (independent)",
+    "what": "AI/ML Learning",
+    "where": "Python/Scikit-learn",
+    "why": "Learning AI and machine learning has helped me understand how AI makes decisions and how it can be improved, while inspiring me to explore how human-like AI could become in the future.",
+    "tags": [
+      "numpy",
+      "pandas",
+      "scikit-learn",
+      "coding",
+      "ai",
+      "ml"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790008110/Screenshot_2026-09-20_123538.png",
+        "alt": "AI image 1",
+        "caption": ""
+      },
+      {
+        "type": "image",
+        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790008110/Screenshot_2026-09-20_123038.png",
+        "alt": "AI image 2",
+        "caption": ""
+      },
+      {
+        "type": "image",
+        "url": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790008110/Screenshot_2026-09-20_123604.png",
+        "alt": "AI image 3",
+        "caption": ""
+      }
+    ]
+  }
+];
 
 
     function getEntries() {
@@ -1497,6 +1589,21 @@
     }
 
 
+
+    function updateTimelineAxis() {
+        const axis = document.querySelector('.timeline-axis');
+        const sticky = document.querySelector('.timeline-sticky');
+        const firstDot = document.querySelector('.timeline-panel .panel-year__dot');
+
+        if (!axis || !sticky || !firstDot) return;
+
+        const stickyRect = sticky.getBoundingClientRect();
+        const dotRect = firstDot.getBoundingClientRect();
+
+        axis.style.top =
+          `${dotRect.top - stickyRect.top + dotRect.height / 2}px`;
+      }
+
     // ── Build timeline panels ──
 
     function renderPanels() {
@@ -1533,7 +1640,11 @@
           A visual record of skills, projects and milestones.
         </p>
 
-        <span class="intro-panel__cta">
+        <button
+          class="intro-panel__cta"
+          type="button"
+          onclick="document.getElementById('first-timeline-entry').scrollIntoView({ behavior: 'smooth' })"
+        >
 
           <svg
             width="14"
@@ -1549,7 +1660,7 @@
 
           Explore timeline
 
-        </span>
+        </button>
 
         
 
@@ -1604,7 +1715,10 @@
 
         if (i === 0) {
           panel.classList.add('is-active');
+          panel.id = 'first-timeline-entry';
         }
+
+        
 
 
         const firstMedia =
@@ -1805,11 +1919,15 @@
 
       });
 
+      
+
+      requestAnimationFrame(updateTimelineAxis);
+
     }
 
 
     renderPanels();
-
+    window.addEventListener('resize', updateTimelineAxis);
 
     // ── Panel helpers ──
 
@@ -1831,75 +1949,55 @@
       currently closest to the centre of the viewport.
     */
 
-    const timelineObserver =
-      new IntersectionObserver(
+    function updateActivePanel() {
 
-        observed => {
+  if (lightboxOpen) return;
 
-          let bestPanel = null;
-          let bestRatio = 0;
+  const allPanels = panels();
 
+  let bestPanel = null;
+  let bestDistance = Infinity;
 
-          observed.forEach(item => {
+  allPanels.forEach(panel => {
 
-            if (
-              item.isIntersecting &&
-              item.intersectionRatio > bestRatio
-            ) {
+    const rect = panel.getBoundingClientRect();
 
-              bestRatio =
-                item.intersectionRatio;
+    const panelCenter =
+      rect.top + rect.height / 2;
 
-              bestPanel =
-                item.target;
+    const screenCenter =
+      window.innerHeight / 2;
 
-            }
+    const distance =
+      Math.abs(panelCenter - screenCenter);
 
-          });
+    if (distance < bestDistance) {
 
+      bestDistance = distance;
+      bestPanel = panel;
 
-          if (
-            bestPanel &&
-            !lightboxOpen
-          ) {
+    }
 
-            const index =
-              Number(
-                bestPanel.dataset.index
-              );
+  });
 
+  if (bestPanel) {
 
-            if (
-              index !== activeIndex
-            ) {
+    const index =
+      Number(bestPanel.dataset.index);
 
-              setActive(index);
+    if (index !== activeIndex) {
+      setActive(index);
+    }
 
-            }
+  }
 
-          }
+}
 
-        },
-
-        {
-          threshold: [
-            0.25,
-            0.5,
-            0.75
-          ],
-
-          rootMargin:
-            '-25% 0px -25% 0px'
-        }
-
-      );
-
-
-    panels().forEach(panel => {
-
-      timelineObserver.observe(panel);
-
-    });
+window.addEventListener(
+  'scroll',
+  updateActivePanel,
+  { passive: true }
+);
 
 
     // ── Active state ──
