@@ -321,6 +321,7 @@
       aspect-ratio: 16 / 9;
       overflow: hidden;
       border-radius: 2px;
+      /*background: red !important;*/
       opacity: 0;
       transform: translateY(20px) scale(0.97);
       transition:
@@ -891,13 +892,13 @@
 
 <body>
 
-  <a href="https://tft11.github.io/portfolio/" class="skip-link">Skip to timeline</a>
+  <a href="https://tft.11.github.io/portfolio/" class="skip-link">Skip to timeline</a>
 
   <!-- Site Header -->
 
   <header class="site-header" role="banner">
 
-    <a href="https://tft11.github.io/portfolio/" class="site-header__logo" aria-label="Portfolio home">
+    <a href="https://tft.11.github.io/portfolio/" class="site-header__logo" aria-label="Portfolio home">
 
       <span class="site-header__logo-dot" aria-hidden="true"></span>
 
@@ -1212,6 +1213,7 @@
     "id": "entry-001",
     "year": "2026",
     "title": "Minecraft Modding",
+    "icon": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790788116/Mods-Icons.png",
     "role": "Independent Developer",
     "description": "Modding gave me the freedom to create things the way I wanted and actually implement them into a game that so many people play. Starting with Toast + More helped me develop my Java skills and showed me how existing systems can make programming much easier. Once I found the first project fairly straightforward, I wanted to challenge myself with something more difficult, which led me to start working on a new WorldGeneration mod which has not yet been released on Modrinth.",
     "who": "tft11 (independent)",
@@ -1243,6 +1245,7 @@
     "id": "entry-mtpuu4bmpmao",
     "year": "2026",
     "title": "Unity",
+    "icon": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790701750/Unity-Controller.svg",
     "role": "Independent Developer",
     "description": "Unity gave me the opportunity to explore game development and learn how different parts of a game fit together. Working with C#, 3D models, physics and AI was very different from what I had done before, and I found it really interesting to see how everything worked together. Although I didn't finish the project, I learnt a lot from making it and plan to return to Unity in the future with a simpler idea.",
     "who": "tft11 (Independent)",
@@ -1257,9 +1260,10 @@
     "media": []
   },
   {
-    "id": "entry-mtpupziq2y7z",
+    "id": "entry-002",
     "year": "2026+",
     "title": "AI and Machine Learning",
+    "icon": "https://res.cloudinary.com/gg8hzagp/image/upload/v1790701750/AI-Bot.svg",
     "role": "AI/ML Student",
     "description": "Learning about AI and machine learning has given me a better understanding of how AI models make predictions and how much they can actually achieve. Working with real datasets and seeing how accurate my models could become was really interesting, but it also showed me that AI isn't automatically as accurate as it can seem and that models still need to be improved. I'm especially interested in understanding how AI can become more human-like and how far that technology can eventually go.",
     "who": "tft11 (independent)",
@@ -1323,7 +1327,8 @@
 
     // ── State ──
 
-    const entries = getEntries();
+    //const entries = getEntries();
+    const entries = DEFAULT_ENTRIES;
 
     let activeIndex = 0;
     let lightboxOpen = false;
@@ -1721,8 +1726,10 @@
         
 
 
-        const firstMedia =
-          entry.media?.[0];
+        const firstMedia = 
+          entry.icon;
+
+        //alert(JSON.stringify(firstMedia));
 
         const mediaCount =
           entry.media?.length || 0;
@@ -1796,13 +1803,23 @@
             panel.querySelector(
               '.panel-media-thumb'
             );
+//alert('ICON CODE RUNNING');
+          const testImg = document.createElement('img');
 
-          thumb.appendChild(
-            buildMediaEl(
-              firstMedia,
-              false
-            )
-          );
+testImg.src = firstMedia;
+//testImg.style.width = '70%';
+//testImg.style.height = '70%';
+testImg.style.objectFit = 'contain';
+testImg.style.display = 'block';
+testImg.style.margin = 'auto';
+testImg.style.width =
+  entry.id === 'entry-002' ? '100%' : '70%';
+
+testImg.style.height =
+  entry.id === 'entry-002' ? '100%' : '70%';
+
+
+thumb.appendChild(testImg);
 
 
           if (mediaCount > 1) {
@@ -1828,6 +1845,8 @@
           }
 
         }
+
+        
 
 
         // Click to open lightbox
